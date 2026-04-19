@@ -672,7 +672,7 @@ body {
     <span class="mascot">🌸</span>
     <div class="hero-tag">✦ Complete Beginner Roadmap</div>
     <h1>My Web Dev<br>Adventure!</h1>
-    <p class="hero-sub">Hey <span class="hero-name">Sis</span>! 👋 By the end of this, you'll build your own real website — from zero to hero, one lesson at a time!</p>
+    <p class="hero-sub">Hey <span class="hero-name">pango</span>! 👋 By the end of this, you'll build your own real website — from zero to hero, one lesson at a time!</p>
   </div>
 
   <!-- ── XP CARD ── -->
@@ -713,8 +713,8 @@ body {
 
   <!-- ── FOOTER ── -->
   <div class="footer">
-    Made with by your <strong>kuya mong pogi</strong><br>
-    <span style="font-size:12px;color:var(--hint)">You got this, sis! Every website on the internet was built by someone who started here. 🌟</span>
+    Made by your <strong>kuya mong pogi</strong><br>
+    <span style="font-size:12px;color:var(--hint)">You got this, pango! Every website on the internet was built by someone who started here. 🌟</span>
   </div>
 </div>
 
@@ -1143,7 +1143,7 @@ const STAGES = [
         explain:'A <strong>function</strong> is a reusable set of instructions that does one specific job.\n\nYou <strong>define</strong> (write) a function once with the word <strong>function</strong>.\nYou <strong>call</strong> (use) a function by writing its name with ().\n\nFunctions can:\n• Take <strong>inputs</strong> (called parameters or arguments)\n• Give back a <strong>result</strong> (using return)\n\nWhy are functions amazing? Instead of writing the same 10 lines of code 20 times, you write a function once and call it 20 times! It also makes your code organized and easy to fix.',
         analogy:'A function is like a recipe card 📋. You write the recipe for "chocolate cake" once. Then anytime you want a chocolate cake, you just say "make chocolate cake!" and follow the same steps. You don\'t rewrite the recipe every time!',
         tip:'💡 Every time you find yourself writing the SAME code in two places, that\'s a sign — make it a function! Functions are the foundation of every real app.',
-        code:'// DEFINING a function (writing the recipe)\nfunction greet(name) {\n   return "Kamusta, " + name + "! 👋";\n}\n\nfunction addNumbers(a, b) {\n   return a + b;\n}\n\nfunction isAdult(age) {\n   if (age >= 18) {\n      return "Yes, adult!";\n   } else {\n      return "Nope, still young!";\n   }\n}\n\n// CALLING the functions (using the recipe)\nconsole.log( greet("Maria") );      // "Kamusta, Maria! 👋"\nconsole.log( greet("Sis") );        // "Kamusta, Sis! 👋"\nconsole.log( addNumbers(5, 3) );    // 8\nconsole.log( isAdult(13) );         // "Nope, still young!"',
+        code:'// DEFINING a function (writing the recipe)\nfunction greet(name) {\n   return "Kamusta, " + name + "! 👋";\n}\n\nfunction addNumbers(a, b) {\n   return a + b;\n}\n\nfunction isAdult(age) {\n   if (age >= 18) {\n      return "Yes, adult!";\n   } else {\n      return "Nope, still young!";\n   }\n}\n\n// CALLING the functions (using the recipe)\nconsole.log( greet("Maria") );      // "Kamusta, Maria! 👋"\nconsole.log( greet("pango") );        // "Kamusta, pango! 👋"\nconsole.log( addNumbers(5, 3) );    // 8\nconsole.log( isAdult(13) );         // "Nope, still young!"',
         tryDesc:'Copy this into OneCompiler! Try calling greet() with different names. Change addNumbers() to do multiplication instead. Make your own function!',
         quiz:[
           { q:'What keyword do you use to create a function?', opts:['create','make','function','def'], ans:2 },
@@ -1223,18 +1223,18 @@ let quizScores = {}; // {lessonId: {correct, total, attempts}}
 let visitLog = [];   // [{ts, action, lessonId}]
 let challengesDone = [];
 
-try { done = JSON.parse(localStorage.getItem('sis_done_v2') || '[]'); } catch(e) {}
-try { quizScores = JSON.parse(localStorage.getItem('sis_quiz_v2') || '{}'); } catch(e) {}
-try { visitLog = JSON.parse(localStorage.getItem('sis_log_v2') || '[]'); } catch(e) {}
-try { challengesDone = JSON.parse(localStorage.getItem('sis_challenges_v2') || '[]'); } catch(e) {}
+try { done = JSON.parse(localStorage.getItem('pango_done_v2') || '[]'); } catch(e) {}
+try { quizScores = JSON.parse(localStorage.getItem('pango_quiz_v2') || '{}'); } catch(e) {}
+try { visitLog = JSON.parse(localStorage.getItem('pango_log_v2') || '[]'); } catch(e) {}
+try { challengesDone = JSON.parse(localStorage.getItem('pango_challenges_v2') || '[]'); } catch(e) {}
 
 // Log a visit timestamp
 (function logVisit(){
   const now = Date.now();
   visitLog.push({ts: now, action:'visit'});
   if (visitLog.length > 200) visitLog = visitLog.slice(-200);
-  try { localStorage.setItem('sis_log_v2', JSON.stringify(visitLog)); } catch(e) {}
-  try { localStorage.setItem('sis_lastvisit', now); } catch(e) {}
+  try { localStorage.setItem('pango_log_v2', JSON.stringify(visitLog)); } catch(e) {}
+  try { localStorage.setItem('pango_lastvisit', now); } catch(e) {}
 })();
 
 let activeLesson = null;
@@ -1245,10 +1245,10 @@ let quizSessionTotal = 0;
 
 function save() {
   try {
-    localStorage.setItem('sis_done_v2', JSON.stringify(done));
-    localStorage.setItem('sis_quiz_v2', JSON.stringify(quizScores));
-    localStorage.setItem('sis_log_v2', JSON.stringify(visitLog));
-    localStorage.setItem('sis_challenges_v2', JSON.stringify(challengesDone));
+    localStorage.setItem('pango_done_v2', JSON.stringify(done));
+    localStorage.setItem('pango_quiz_v2', JSON.stringify(quizScores));
+    localStorage.setItem('pango_log_v2', JSON.stringify(visitLog));
+    localStorage.setItem('pango_challenges_v2', JSON.stringify(challengesDone));
   } catch(e) {}
 }
 
