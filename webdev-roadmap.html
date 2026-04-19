@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Web Dev Journey 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e17;
+    --surface: #1a1927;
+    --surface2: #232136;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #fffffe;
+    --muted: #a7a9be;
+    --hint: #6c6f8a;
+    --purple: #c084fc;
+    --purple-dark: #7c3aed;
+    --purple-glow: rgba(192,132,252,0.18);
+    --pink: #f472b6;
+    --amber: #fbbf24;
+    --teal: #2dd4bf;
+    --green: #4ade80;
+    --blue: #60a5fa;
+    --coral: #fb7185;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background stars */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(244,114,182,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(45,212,191,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* Hero */
+  .hero { text-align: center; padding: 3rem 0 2.5rem; }
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--purple);
+    background: var(--purple-glow);
+    border: 1px solid rgba(192,132,252,0.3);
+    padding: 5px 14px;
+    border-radius: 99px;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(135deg, #fffffe 30%, var(--purple) 70%, var(--pink) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p { font-size: 16px; color: var(--muted); max-width: 400px; margin: 0 auto 2rem; line-height: 1.6; }
+
+  /* XP bar */
+  .xp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .xp-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .xp-label { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+  .xp-count { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--purple); }
+  .xp-track { height: 10px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple-dark), var(--purple), var(--pink));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 12px rgba(192,132,252,0.5);
+  }
+  .xp-stars { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .xp-star { font-size: 10px; color: var(--hint); font-family: 'Space Mono', monospace; }
+  .xp-star.lit { color: var(--amber); }
+
+  /* Stage cards */
+  .stages { display: flex; flex-direction: column; gap: 14px; }
+
+  .stage-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .stage-card:hover { border-color: var(--border2); }
+  .stage-card.complete { border-color: rgba(74,222,128,0.25); }
+
+  .stage-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .stage-header:hover { background: rgba(255,255,255,0.03); }
+
+  .stage-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .stage-meta { flex: 1; min-width: 0; }
+  .stage-title { font-size: 15px; font-weight: 800; color: var(--text); }
+  .stage-sub { font-size: 12px; color: var(--hint); margin-top: 2px; }
+  .stage-progress { font-size: 11px; color: var(--muted); margin-top: 3px; font-family: 'Space Mono', monospace; }
+
+  .stage-pill {
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 99px;
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
+  }
+  .chevron { color: var(--hint); font-size: 12px; transition: transform 0.3s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .stage-body { display: none; border-top: 1px solid var(--border); }
+  .stage-body.open { display: block; }
+
+  .lessons { list-style: none; }
+  .lesson {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 1.25rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .lesson:last-child { border-bottom: none; }
+  .lesson:hover { background: rgba(255,255,255,0.03); }
+  .lesson.done { opacity: 0.55; }
+
+  .check-circle {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--hint);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+    transition: all 0.2s;
+    font-size: 12px;
+  }
+  .lesson.done .check-circle {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    border-color: var(--purple);
+    color: white;
+    box-shadow: 0 0 8px rgba(192,132,252,0.4);
+  }
+
+  .lesson-info { flex: 1; }
+  .lesson-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .lesson-desc { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .lesson-chips { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+  .chip {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 99px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  /* Modal overlay */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 1rem;
+  }
+  .overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 1.75rem;
+    max-width: 460px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+    position: relative;
+    animation: popIn 0.25s cubic-bezier(.4,0,.2,1);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.94) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute; top: 14px; right: 16px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--border); }
+
+  .modal-icon { font-size: 32px; margin-bottom: 10px; }
+  .modal-title { font-size: 19px; font-weight: 800; color: var(--text); margin-bottom: 6px; padding-right: 36px; }
+  .modal-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+
+  .modal-example {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #a5f3fc;
+    white-space: pre;
+    overflow-x: auto;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .modal-tip {
+    background: rgba(192,132,252,0.08);
+    border: 1px solid rgba(192,132,252,0.2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--purple);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .btn-done {
+    flex: 1; padding: 11px 16px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: white; font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 800;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    box-shadow: 0 4px 14px rgba(124,58,237,0.35);
+  }
+  .btn-done:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-done:active { transform: scale(0.98); }
+
+  .btn-sec {
+    flex: 1; padding: 11px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted); font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-sec:hover { background: var(--surface2); }
+
+  /* Confetti burst */
+  .burst {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none; z-index: 200;
+    font-size: 48px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .burst.show { opacity: 1; }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 3rem; font-size: 13px; color: var(--hint); }
+  .footer span { color: var(--purple); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 99px; }
+
+  @media (max-width: 480px) {
+    .modal { padding: 1.25rem; }
+    .stage-header { padding: 1rem; }
+    .lesson { padding: 12px 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-badge">✦ beginner roadmap</div>
+    <h1>Your Web Dev Journey</h1>
+    <p>Tap any lesson, learn it, and mark it done. You'll be building real websites before you know it!</p>
+  </div>
+
+  <div class="xp-card">
+    <div class="xp-top">
+      <span class="xp-label">⚡ Progress</span>
+      <span class="xp-count" id="xp-count">0 / 18</span>
+    </div>
+    <div class="xp-track">
+      <div class="xp-fill" id="xp-fill" style="width:0%"></div>
+    </div>
+    <div class="xp-stars" id="xp-stars"></div>
+  </div>
+
+  <div class="stages" id="stages"></div>
+
+  <div class="footer">Made by kuya mong pogi🌟</div>
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="modal-icon" id="modal-icon"></div>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-desc" id="modal-desc"></div>
+    <div class="modal-example" id="modal-example"></div>
+    <div class="modal-tip" id="modal-tip"></div>
+    <div class="modal-actions">
+      <button class="btn-done" id="btn-done">Mark as done ✓</button>
+      <button class="btn-sec" id="btn-skip">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="burst" id="burst">🎉</div>
+
+<script>
+const STAGES = [
+  {
+    id: "warmup",
+    title: "Warm-up",
+    sub: "What even is the web?",
+    icon: "🌐",
+    iconBg: "rgba(45,212,191,0.15)",
+    pill: "Start here",
+    pillBg: "rgba(45,212,191,0.15)",
+    pillColor: "#2dd4bf",
+    lessons: [
+      {
+        id:"w1", name:"How websites work",
+        desc:"Learn what happens when you type google.com — servers, browsers, and the internet.",
+        chip:"Concept", chipBg:"rgba(96,165,250,0.15)", chipColor:"#60a5fa",
+        icon:"🌍",
+        body:"When you visit a website, your browser sends a request to a server far away. The server sends back files (HTML, CSS, JS) and your browser displays them. Think of it like ordering food — you place an order (request) and the kitchen (server) sends your meal (files)!",
+        example:'Browser  →  asks for "google.com"\nServer   →  sends back HTML, CSS, JS\nBrowser  →  puts it all together\n          →  and shows you Google!',
+        tip:"💡 Fun fact: Every website you've ever visited sent files to your browser. You're basically already using web dev!"
+      },
+      {
+        id:"w2", name:"HTML vs CSS vs JavaScript",
+        desc:"The 3 building blocks every website is made of.",
+        chip:"Concept", chipBg:"rgba(96,165,250,0.15)", chipColor:"#60a5fa",
+        icon:"🧱",
+        body:"HTML is the skeleton — it gives the page its structure and content. CSS is the outfit — it makes everything pretty with colors, fonts, and layouts. JavaScript is the brain — it makes things move and react when you click. You need all three to build a real website!",
+        example:'HTML  →  "Here is a button"\nCSS   →  "Make it pink and rounded"\nJS    →  "When clicked, say Hello!"',
+        tip:"💡 Think of it like building a person: HTML = bones, CSS = clothes & hair, JavaScript = personality!"
+      },
+      {
+        id:"w3", name:"Set up VS Code",
+        desc:"Install your free coding tool and create your very first .html file.",
+        chip:"Setup", chipBg:"rgba(74,222,128,0.15)", chipColor:"#4ade80",
+        icon:"💻",
+        body:"Download VS Code for free at code.visualstudio.com — it's what real developers use! Create a new folder on your desktop called 'my-website'. Inside it, make a file called index.html. Drag that file into your browser and you'll see your first webpage. That's really all you need!",
+        example:'1. Download VS Code (free!)\n2. Create a folder → "my-website"\n3. New file inside → index.html\n4. Drag the file into your browser\n5. You made a webpage! 🎉',
+        tip:"💡 VS Code tip: once you open your file, type ! and press Tab — it writes the basic HTML skeleton for you automatically!"
+      }
+    ]
+  },
+  {
+    id: "html",
+    title: "HTML",
+    sub: "Build the bones of your page",
+    icon: "🏗️",
+    iconBg: "rgba(251,191,36,0.15)",
+    pill: "Stage 1",
+    pillBg: "rgba(251,191,36,0.15)",
+    pillColor: "#fbbf24",
+    lessons: [
+      {
+        id:"h1", name:"Your first HTML page",
+        desc:"The basic skeleton that every single webpage on the internet uses.",
+        chip:"Build it", chipBg:"rgba(251,191,36,0.15)", chipColor:"#fbbf24",
+        icon:"📄",
+        body:"Every HTML page starts the same way. This is called the boilerplate. The head holds invisible info like the tab title. The body holds everything the user actually sees. It looks like a lot but VS Code types most of it for you — just press ! then Tab!",
+        example:'<!DOCTYPE html>\n<html>\n  <head>\n    <title>My First Page</title>\n  </head>\n  <body>\n    Hello, world!\n  </body>\n</html>',
+        tip:"💡 The browser reads HTML top to bottom, like a book. Everything inside <body> is what people see!"
+      },
+      {
+        id:"h2", name:"Headings and paragraphs",
+        desc:"h1 to h6 for titles, p for regular text — the most used tags ever.",
+        chip:"Build it", chipBg:"rgba(251,191,36,0.15)", chipColor:"#fbbf24",
+        icon:"✍️",
+        body:"Headings go from h1 (biggest, most important) down to h6 (smallest). Use h1 for the main title, h2 for sections, h3 for smaller sections. Use p for any regular paragraph text. Think of a newspaper: giant headline at the top (h1), smaller sub-headlines below (h2, h3), then paragraphs (p).",
+        example:'<h1>My K-pop Fan Page</h1>\n<h2>About the Group</h2>\n<p>They have the best music ever.</p>\n<h2>My Fave Song</h2>\n<p>I listen to it every single day!</p>',
+        tip:"💡 Only ever use ONE h1 per page — it's the main star. Everything else supports it!"
+      },
+      {
+        id:"h3", name:"Links and images",
+        desc:"Make text clickable with a, and show pictures with img.",
+        chip:"Build it", chipBg:"rgba(251,191,36,0.15)", chipColor:"#fbbf24",
+        icon:"🔗",
+        body:"The a tag creates a clickable link. The href attribute tells it where to go. The img tag displays an image — give it a src (the path to your photo) and an alt (a description for people who can't see images). Put your image files in the same folder as your index.html!",
+        example:'<a href="https://youtube.com">Watch videos!</a>\n\n<img \n  src="myphoto.jpg" \n  alt="A cute photo of me"\n>',
+        tip:"💡 The alt text in img is super important — it helps people who use screen readers, and it shows if the image fails to load!"
+      },
+      {
+        id:"h4", name:"Lists and buttons",
+        desc:"Bullet lists, numbered lists, and clickable buttons — very useful!",
+        chip:"Build it", chipBg:"rgba(251,191,36,0.15)", chipColor:"#fbbf24",
+        icon:"📋",
+        body:"ul = unordered list (bullet points). ol = ordered list (numbers 1, 2, 3...). Each item inside a list is li. Buttons use the button tag — they don't do anything yet, but we'll make them magical once we learn JavaScript in Stage 3!",
+        example:'<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n  <li>JavaScript</li>\n</ul>\n\n<ol>\n  <li>First, learn HTML</li>\n  <li>Then CSS</li>\n  <li>Then JavaScript</li>\n</ol>\n\n<button>Click me!</button>',
+        tip:"💡 ul is like your grocery list (order doesn't matter), ol is like a recipe (order matters a lot!)"
+      },
+      {
+        id:"h5", name:"Mini project: HTML fan page",
+        desc:"Build a real fan page for your fave singer, show, or game using only HTML!",
+        chip:"Project", chipBg:"rgba(74,222,128,0.15)", chipColor:"#4ade80",
+        icon:"⭐",
+        body:"Time to build something real! Make a fan page for anything you love. Don't worry about it being pretty yet — CSS comes next. Focus on the structure: a big title (h1), a photo (img), some paragraphs (p), a fun facts list (ul), and a link to their official page (a). You got this!",
+        example:'<h1>My BLACKPINK Fan Page</h1>\n<img src="blackpink.jpg" alt="BLACKPINK">\n\n<h2>Why I Love Them</h2>\n<p>Their music makes me happy!</p>\n\n<h2>Fun Facts</h2>\n<ul>\n  <li>They debuted in 2016</li>\n  <li>There are 4 members</li>\n  <li>Lisa is from Thailand</li>\n</ul>\n\n<a href="https://blackpinkofficial.com">\n  Official Website\n</a>',
+        tip:"🏆 This is your first project! Save the file, open it in your browser, and take a screenshot to remember this moment!"
+      }
+    ]
+  },
+  {
+    id: "css",
+    title: "CSS",
+    sub: "Make everything beautiful",
+    icon: "🎨",
+    iconBg: "rgba(244,114,182,0.15)",
+    pill: "Stage 2",
+    pillBg: "rgba(244,114,182,0.15)",
+    pillColor: "#f472b6",
+    lessons: [
+      {
+        id:"c1", name:"Colors and fonts",
+        desc:"Change text color, background color, and pick cool fonts for your page.",
+        chip:"Style it", chipBg:"rgba(244,114,182,0.15)", chipColor:"#f472b6",
+        icon:"🌈",
+        body:"CSS rules look like: selector { property: value; }. The selector picks which HTML element to style. color changes text color. background-color changes the background. font-family changes the font. font-size changes how big the text is. You can use color names like 'pink' or codes like '#ff69b4'!",
+        example:'h1 {\n  color: hotpink;\n  font-size: 42px;\n  font-family: Georgia, serif;\n}\n\nbody {\n  background-color: #1a1a2e;\n  color: white;\n}',
+        tip:"💡 Google 'CSS color picker' to find the perfect color codes! Colors can also be written as rgb(255, 105, 180) or #ff69b4."
+      },
+      {
+        id:"c2", name:"The box model",
+        desc:"Every element is a box — learn to control the space inside and around it.",
+        chip:"Style it", chipBg:"rgba(244,114,182,0.15)", chipColor:"#f472b6",
+        icon:"📦",
+        body:"Imagine every HTML element is a cardboard box. Padding is bubble wrap INSIDE the box (space between content and the edge). Margin is the gap OUTSIDE the box pushing other boxes away. Border is the line/wall of the box itself. This Box Model concept is used in literally every website ever!",
+        example:'div {\n  padding: 20px;   /* inside space */\n  margin: 15px;    /* outside space */\n  border: 2px solid hotpink;\n  border-radius: 12px; /* rounded corners! */\n  width: 300px;\n  height: 150px;\n}',
+        tip:"💡 border-radius: 50% on a square div makes a perfect circle! Great for profile photos."
+      },
+      {
+        id:"c3", name:"Flexbox — arrange things",
+        desc:"The easiest way to line things up side by side or center them perfectly.",
+        chip:"Style it", chipBg:"rgba(244,114,182,0.15)", chipColor:"#f472b6",
+        icon:"↔️",
+        body:"Flexbox is a CSS superpower! Add display: flex to a container and its children line up in a row. justify-content controls left/right position. align-items controls up/down position. Use 'center' for both and your content is perfectly centered — something that used to be very hard to do!",
+        example:'.container {\n  display: flex;\n  justify-content: center; /* left/right */\n  align-items: center;    /* up/down */\n  gap: 16px;              /* space between */\n}\n\n/* Makes 3 cards sit side by side! */\n.card { width: 200px; }',
+        tip:"💡 Flexbox is one of the most used CSS tools in real jobs. Mastering it makes you feel like a superhero!"
+      },
+      {
+        id:"c4", name:"Mini project: style your fan page",
+        desc:"Take your HTML fan page from Stage 1 and make it gorgeous!",
+        chip:"Project", chipBg:"rgba(74,222,128,0.15)", chipColor:"#4ade80",
+        icon:"✨",
+        body:"Go back to your HTML fan page and link a CSS file to it! Add a beautiful color theme that matches your fave. Try a gradient background. Change the fonts using Google Fonts (fonts.google.com — it's free!). Add rounded corners. Make it look like something you'd actually want to visit!",
+        example:'/* In HTML: */\n<link rel="stylesheet" href="style.css">\n\n/* In style.css: */\nbody {\n  background: linear-gradient(\n    135deg, #1a1a2e, #16213e\n  );\n  font-family: \'Nunito\', sans-serif;\n  color: white;\n}\n\nh1 {\n  color: hotpink;\n  text-align: center;\n}',
+        tip:"🏆 Take a before/after screenshot — the glow-up from HTML-only to styled CSS is SO satisfying!"
+      }
+    ]
+  },
+  {
+    id: "js",
+    title: "JavaScript",
+    sub: "Make your page alive and interactive",
+    icon: "⚡",
+    iconBg: "rgba(192,132,252,0.15)",
+    pill: "Stage 3",
+    pillBg: "rgba(192,132,252,0.15)",
+    pillColor: "#c084fc",
+    lessons: [
+      {
+        id:"j1", name:"Variables and data types",
+        desc:"Store information in variables — like labelled boxes for your data.",
+        chip:"Code it", chipBg:"rgba(192,132,252,0.15)", chipColor:"#c084fc",
+        icon:"📦",
+        body:"A variable is like a labelled box that stores information. let means the value can change later. const means it stays the same forever. JavaScript has different types of data: strings (text inside quotes), numbers, and booleans (true or false). console.log() prints values so you can see what's happening!",
+        example:'let name = "Maria";      // string (text)\nlet age = 13;            // number\nlet isAwesome = true;    // boolean\nconst school = "DLSZ";   // never changes\n\nconsole.log(name);  // prints: Maria\nconsole.log(age);   // prints: 13',
+        tip:"💡 Open your browser, press F12, click Console — that's where console.log() outputs appear! It's your JS playground."
+      },
+      {
+        id:"j2", name:"Functions",
+        desc:"Write reusable blocks of code that do one specific job.",
+        chip:"Code it", chipBg:"rgba(192,132,252,0.15)", chipColor:"#c084fc",
+        icon:"🔧",
+        body:"A function is a reusable set of instructions. You define it once with the function keyword, then call it by name whenever you need it. Functions can take inputs (parameters) and give back a result (return value). This is exactly how checkGuess() in the number guessing game worked!",
+        example:'function greet(name) {\n  return "Kamusta, " + name + "!";\n}\n\nfunction add(a, b) {\n  return a + b;\n}\n\ngreet("Maria");  // "Kamusta, Maria!"\nadd(5, 3);       // 8',
+        tip:"💡 Functions are one of the most powerful tools in coding. If you find yourself writing the same code twice, make a function!"
+      },
+      {
+        id:"j3", name:"If / else — making decisions",
+        desc:"Make your code take different paths based on conditions.",
+        chip:"Code it", chipBg:"rgba(192,132,252,0.15)", chipColor:"#c084fc",
+        icon:"🤔",
+        body:"if/else lets your code make decisions! If the condition is true, run the first block. Otherwise, run the else block. You can chain multiple conditions with else if. This is how games know if you won or lost — like the number guessing game checking if your guess was correct!",
+        example:'let score = 95;\n\nif (score >= 90) {\n  console.log("Outstanding!");\n} else if (score >= 75) {\n  console.log("Passed!");\n} else {\n  console.log("Try again!");\n}',
+        tip:"💡 The === checks if two things are exactly equal. Always use === in JavaScript, not just == (trust me on this one!)"
+      },
+      {
+        id:"j4", name:"Clicking buttons with JS",
+        desc:"Make a button actually DO something — your first truly interactive page!",
+        chip:"Code it", chipBg:"rgba(192,132,252,0.15)", chipColor:"#c084fc",
+        icon:"🖱️",
+        body:"document.getElementById() finds an HTML element by its id. innerHTML lets you change what's displayed inside it. onclick in the HTML, or addEventListener in JS, listens for a click event. This is the foundation of how every button on every website works!",
+        example:'<!-- In HTML -->\n<button onclick="sayHi()">Say Hi!</button>\n<p id="message"></p>\n\n<!-- In JS -->\nfunction sayHi() {\n  let msg = document.getElementById("message");\n  msg.innerHTML = "Hi there! 👋";\n  msg.style.color = "hotpink";\n}',
+        tip:"💡 Open the browser console (F12) while building this and you'll see any errors. Errors are normal — they tell you what to fix!"
+      },
+      {
+        id:"j5", name:"Final project: build a quiz game",
+        desc:"Build a quiz about anything you love — questions, answers, and a live score!",
+        chip:"Project", chipBg:"rgba(74,222,128,0.15)", chipColor:"#4ade80",
+        icon:"🏆",
+        body:"You now know HTML (structure), CSS (style), and JavaScript (logic). You can build a real game! Make a quiz about K-pop, anime, your school, anything! Show a question, let the user click an answer button, tell them if they're right, and track the score. Everything you need — you already know. Go build it!",
+        example:'let score = 0;\n\nfunction checkAnswer(choice) {\n  let result = document.getElementById("result");\n\n  if (choice === "BLACKPINK") {\n    score++;\n    result.innerHTML = "Correct! 🎉 Score: " + score;\n    result.style.color = "lightgreen";\n  } else {\n    result.innerHTML = "Wrong! Try again 💪";\n    result.style.color = "tomato";\n  }\n}',
+        tip:"🏆 YOU DID IT! You're now a web developer! Share your quiz with your family — you built something real with real code!"
+      }
+    ]
+  },
+  {
+    id: "next",
+    title: "What's next?",
+    sub: "Keep growing beyond the basics",
+    icon: "🚀",
+    iconBg: "rgba(96,165,250,0.15)",
+    pill: "Bonus",
+    pillBg: "rgba(96,165,250,0.15)",
+    pillColor: "#60a5fa",
+    lessons: [
+      {
+        id:"n1", name:"Publish your site online for free",
+        desc:"Share your website with the world using Netlify or GitHub Pages.",
+        chip:"Level up", chipBg:"rgba(96,165,250,0.15)", chipColor:"#60a5fa",
+        icon:"🌏",
+        body:"Netlify and GitHub Pages let you host your website completely free so anyone with the link can visit it! With Netlify, you just drag your project folder onto their website and they give you a free link instantly. No credit card, no signup fees. Share it with your friends and family!",
+        example:'netlify.com → drag your folder\n→ get a free link like:\n   your-site.netlify.app\n\nOR\n\ngithub.com → create repo\n→ Settings → Pages → publish\n→ username.github.io/your-site',
+        tip:"💡 Having a live website link is already impressive for a beginner! Put it in your social media bio — web developer in the making!"
+      },
+      {
+        id:"n2", name:"Free resources to keep learning",
+        desc:"The best websites and tools for continuing your web dev journey.",
+        chip:"Resources", chipBg:"rgba(74,222,128,0.15)", chipColor:"#4ade80",
+        icon:"📚",
+        body:"freeCodeCamp.org — completely free, structured lessons with certificates. W3Schools.com — the best quick reference for looking up HTML/CSS/JS tags. CodePen.io — see and remix cool projects by other developers. YouTube: search 'web development for beginners 2024'. Most importantly: build things! Every project teaches more than any lesson.",
+        example:'freecodecamp.org  → free courses\nw3schools.com     → quick reference\ncodepen.io        → fun experiments\nfonts.google.com  → free fonts\nflaticon.com      → free icons\nyoutube.com       → video tutorials',
+        tip:"🌟 The secret: every professional web developer still looks things up. Knowing WHERE to find answers is a skill too!"
+      }
+    ]
+  }
+];
+
+let done = JSON.parse(localStorage.getItem('sis_webdev_done') || '[]');
+let activeLesson = null;
+
+function totalLessons() { return STAGES.reduce((a,s) => a + s.lessons.length, 0); }
+
+function updateXP() {
+  const total = totalLessons();
+  const count = done.length;
+  document.getElementById('xp-count').textContent = count + ' / ' + total;
+  document.getElementById('xp-fill').style.width = Math.round((count / total) * 100) + '%';
+
+  const starsEl = document.getElementById('xp-stars');
+  starsEl.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const s = document.createElement('span');
+    s.className = 'xp-star' + (i < count ? ' lit' : '');
+    s.textContent = i < count ? '★' : '☆';
+    starsEl.appendChild(s);
+  }
+}
+
+function saveDone() { localStorage.setItem('sis_webdev_done', JSON.stringify(done)); }
+
+function showBurst() {
+  const el = document.getElementById('burst');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1400);
+}
+
+function openLesson(stage, lesson) {
+  activeLesson = { stage, lesson };
+  document.getElementById('modal-icon').textContent = lesson.icon;
+  document.getElementById('modal-title').textContent = lesson.name;
+  document.getElementById('modal-desc').textContent = lesson.body;
+  document.getElementById('modal-example').textContent = lesson.example;
+  document.getElementById('modal-tip').textContent = lesson.tip;
+  const isDone = done.includes(lesson.id);
+  document.getElementById('btn-done').textContent = isDone ? 'Unmark lesson ✕' : 'Mark as done ✓';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('modal').scrollTop = 0;
+}
+
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+
+document.getElementById('modal-close').onclick = closeModal;
+document.getElementById('btn-skip').onclick = closeModal;
+document.getElementById('overlay').onclick = (e) => { if (e.target === document.getElementById('overlay')) closeModal(); };
+
+document.getElementById('btn-done').onclick = () => {
+  if (!activeLesson) return;
+  const id = activeLesson.lesson.id;
+  if (done.includes(id)) {
+    done = done.filter(d => d !== id);
+  } else {
+    done.push(id);
+    showBurst();
+  }
+  saveDone();
+  updateXP();
+  renderStages();
+  document.getElementById('btn-done').textContent = done.includes(id) ? 'Unmark lesson ✕' : 'Mark as done ✓';
+};
+
+function renderStages() {
+  const container = document.getElementById('stages');
+  container.innerHTML = '';
+
+  STAGES.forEach(stage => {
+    const doneCount = stage.lessons.filter(l => done.includes(l.id)).length;
+    const allDone = doneCount === stage.lessons.length;
+
+    const card = document.createElement('div');
+    card.className = 'stage-card' + (allDone ? ' complete' : '');
+
+    card.innerHTML = `
+      <div class="stage-header" data-id="${stage.id}">
+        <div class="stage-icon" style="background:${stage.iconBg}">${stage.icon}</div>
+        <div class="stage-meta">
+          <div class="stage-title">${stage.title}${allDone ? ' <span style="color:#4ade80;font-size:13px">✓ Complete!</span>' : ''}</div>
+          <div class="stage-sub">${stage.sub}</div>
+          <div class="stage-progress">${doneCount} / ${stage.lessons.length} done</div>
+        </div>
+        <span class="stage-pill" style="background:${stage.pillBg};color:${stage.pillColor}">${stage.pill}</span>
+        <span class="chevron" id="chev-${stage.id}">▼</span>
+      </div>
+      <div class="stage-body" id="body-${stage.id}">
+        <ul class="lessons">
+          ${stage.lessons.map(l => `
+            <li class="lesson${done.includes(l.id) ? ' done' : ''}" data-sid="${stage.id}" data-lid="${l.id}">
+              <div class="check-circle">${done.includes(l.id) ? '✓' : ''}</div>
+              <div class="lesson-info">
+                <div class="lesson-name">${l.icon} ${l.name}</div>
+                <div class="lesson-desc">${l.desc}</div>
+                <div class="lesson-chips">
+                  <span class="chip" style="background:${l.chipBg};color:${l.chipColor}">${l.chip}</span>
+                  <span class="chip" style="background:rgba(255,255,255,0.06);color:#a7a9be">Tap to learn</span>
+                </div>
+              </div>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `;
+
+    container.appendChild(card);
+
+    card.querySelector('.stage-header').onclick = () => {
+      const body = document.getElementById('body-' + stage.id);
+      const chev = document.getElementById('chev-' + stage.id);
+      body.classList.toggle('open');
+      chev.classList.toggle('open');
+    };
+
+    card.querySelectorAll('.lesson').forEach(el => {
+      el.onclick = () => {
+        const st = STAGES.find(s => s.id === el.dataset.sid);
+        const ls = st.lessons.find(l => l.id === el.dataset.lid);
+        openLesson(st, ls);
+      };
+    });
+  });
+
+  updateXP();
+}
+
+renderStages();
+document.getElementById('body-warmup').classList.add('open');
+document.getElementById('chev-warmup').classList.add('open');
+</script>
+</body>
+</html>
